@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image from URL</title>
+</head>
+<body>
+    <div id="uploadForm" class="container">
+        <h2>Upload Image from URL</h2>
+        <form id="imageUploadForm">
+            <input type="text" name="fileDownloadUri" id="fileDownloadUri" placeholder="File Download URI">
+            <input type="text" name="eventName" id="eventName" placeholder="Event Name">
+            <input type="text" name="dateEvent" id="dateEvent" placeholder="Date Event">
+            <input type="text" name="timeEvent" id="timeEvent" placeholder="Time Event">
+            <input type="text" name="locationVenue" id="locationVenue" placeholder="Location Venue">
+            <input type="text" name="eventDescription" id="eventDescription" placeholder="Event Description">
+            <input type="text" name="maximumAttendee" id="maximumAttendee" placeholder="Maximum Attendee">
+            <button type="button" onclick="uploadImage()">Upload Image</button>
+        </form>
+    </div>
+    <div id="uploadedImage" class="container">
+        <!-- Uploaded image will be displayed here -->
+    </div>
+    <script>
+        function uploadImage() {
+            const fileDownloadUri = document.getElementById('fileDownloadUri').value;
+            const eventName = document.getElementById('eventName').value;
+            const dateEvent = document.getElementById('dateEvent').value;
+            const timeEvent = document.getElementById('timeEvent').value;
+            const locationVenue = document.getElementById('locationVenue').value;
+            const eventDescription = document.getElementById('eventDescription').value;
+            const maximumAttendee = document.getElementById('maximumAttendee').value;
+            // Create an image element
+            const img = document.createElement('img');
+            img.src = fileDownloadUri;
+            // Append the image to the container
+            const uploadedImageContainer = document.getElementById('uploadedImage');
+            uploadedImageContainer.innerHTML = '';
+            uploadedImageContainer.appendChild(img);
+            // Display other event details
+            const detailsContainer = document.createElement('div');
+            detailsContainer.innerHTML = `
+                <p><strong>Event Name:</strong> ${eventName}</p>
+                <p><strong>Date Event:</strong> ${dateEvent}</p>
+                <p><strong>Time Event:</strong> ${timeEvent}</p>
+                <p><strong>Location Venue:</strong> ${locationVenue}</p>
+                <p><strong>Event Description:</strong> ${eventDescription}</p>
+                <p><strong>Maximum Attendee:</strong> ${maximumAttendee}</p>
+            `;
+            uploadedImageContainer.appendChild(detailsContainer);
+        }
+        
+    </script>
+</body>
+</html>

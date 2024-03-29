@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login data</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ </head>
+ <body>
+  <button id="redirectToAbc">GO TO abc.html</button>
+   
+   <script>
+   $(document).ready(function (){
+        $('#redirectToAbc).click(function () {
+            $.ajax({
+              url: 'http://localhost:8925/abc.html',
+              success: 'GET',
+                   success: function (response) {
+                                window.location.href = 'http://localhost:8925/abc.html';
+                            },
+                    error: function (xhr, status, error) {
+                        console.error('Error:',error);
+                    }
+                });
+                });
+			});
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display JSON Data</title>
+</head>
+
+<body>
+    <div id="filterForm" class="container">
+        <label for="filterInput">SEARCH :</label>
+        <input type="text" id="filterInput" name="filterInput">
+        <button onclick="filterEvents()">Search</button>
+    </div>
+
+    <div id="eventsList" class="container"> <!-- Events will be displayed here --> </div>
+
+    <div id="dataList"></div>
+
+    <div id="bookingForm" class="container">
+        <h2>Book Seats</h2>
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" name="eventName">
+        <label for="numSeats">Number of Seats to Book:</label>
+        <input type="number" id="numSeats" name="numSeats" min="1">
+        <button onclick="bookSeats()">Book Seats</button>
+        <p id="availableSeats">Available Seats: </p>
+    </div>
+
+    <div id="uploadForm" class="container">
+        <h2>Upload Image</h2>
+        <form id="imageUploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="file">
+            <input type="text" name="eventName" id="uploadEventName" placeholder="Event Name">
+            <input type="text" name="dateEvent" id="uploadDateEvent" placeholder="Date Event">
+            <input type="text" name="timeEvent" id="uploadTimeEvent" placeholder="Time Event">
+            <input type="text" name="locationVenue" id="uploadLocationVenue" placeholder="Location Venue">
+            <input type="text" name="eventDescription" id="uploadEventDescription" placeholder="Event Description">
+            <input type="text" name="maximumAttendee" id="uploadMaximumAttendee" placeholder="Maximum Attendee">
+            <button type="button" onclick="uploadImage()">Upload Image</button>
+        </form>
+    </div>
+
+    <script>
+        function filterEvents() {
+            // Your existing code for filtering events
+        }
+
+        function bookSeats() {
+            // Your existing code for booking seats
+        }
+
+        function uploadImage() {
+            const fileInput = document.getElementById('file');
+            const eventName = document.getElementById('uploadEventName').value;
+            const dateEvent = document.getElementById('uploadDateEvent').value;
+            const timeEvent = document.getElementById('uploadTimeEvent').value;
+            const locationVenue = document.getElementById('uploadLocationVenue').value;
+            const eventDescription = document.getElementById('uploadEventDescription').value;
+            const maximumAttendee = document.getElementById('uploadMaximumAttendee').value;
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('eventName', eventName);
+            formData.append('dateEvent', dateEvent);
+            formData.append('timeEvent', timeEvent);
+            formData.append('locationVenue', locationVenue);
+            formData.append('eventDescription', eventDescription);
+            formData.append('maximumAttendee', maximumAttendee);
+
+            fetch('http://localhost:9898/uploadFile', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Upload successful:', data);
+                    // You can add any success handling here
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                    // You can add any error handling here
+                });
+        }
+    </script>
+</body>
+
+</html>

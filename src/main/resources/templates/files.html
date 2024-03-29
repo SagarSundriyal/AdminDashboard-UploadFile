@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Download Example</title>
+</head>
+
+<body>
+    <h2>Download Images</h2>
+    <div id="imagesContainer">
+        <!-- Images will be displayed here -->
+    </div>
+
+    <script>
+        // Function to load images
+        function loadImages() {
+            fetch('http://localhost:9898/downloadFile/article370.jpeg') // Replace the URL with your endpoint for downloading images
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const img = document.createElement('img');
+                    img.src = url;
+                    document.getElementById('imagesContainer').appendChild(img);
+                })
+                .catch(error => console.error('Error loading images:', error));
+        }
+
+        // Call loadImages() function when the page loads
+        window.onload = loadImages;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display JSON Data</title>
+</head>
+
+<body>
+    <div id="filterForm" class="container">
+        <label for="filterInput">SEARCH :</label>
+        <input type="text" id="filterInput" name="filterInput">
+        <button onclick="filterEvents()">Search</button>
+    </div>
+
+    <div id="eventsList" class="container"> <!-- Events will be displayed here --> </div>
+
+    <div id="dataList"></div>
+
+    <div id="bookingForm" class="container">
+        <h2>Book Seats</h2>
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" name="eventName">
+        <label for="numSeats">Number of Seats to Book:</label>
+        <input type="number" id="numSeats" name="numSeats" min="1">
+        <button onclick="bookSeats()">Book Seats</button>
+        <p id="availableSeats">Available Seats: </p>
+    </div>
+
+    <script>
+        function filterEvents() {
+            const filterValue = document.getElementById('filterInput').value.toLowerCase();
+            const dataList = document.getElementById('dataList');
+            dataList.innerHTML = ''; // Clear existing content
+
+            fetch('http://localhost:9898/uploadFile')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        for (const key in item) {
+                            if (item.hasOwnProperty(key) && key !== 'id') {
+                                const value = item[key];
+                                itemDiv.innerHTML += `<p><strong>${key}:</strong> ${value}</p>`;
+                            }
+                        }
+                        dataList.appendChild(itemDiv);
+                    });
+
+                    // Filter the data based on search query
+                    const filteredData = data.filter(item => {
+                        return (
+                            item.eventName.toLowerCase().includes(filterValue) ||
+                            item.dateEvent.includes(filterValue) ||
+                            item.timeEvent.toLowerCase().includes(filterValue) ||
+                            item.locationVenue.toLowerCase().includes(filterValue) ||
+                            item.eventDescription.toLowerCase().includes(filterValue) ||
+                            item.maximumAttendee.toLowerCase().includes(filterValue) ||
+                            item.uploadImage.toLowerCase().includes(filterValue) 
+                        );
+                    });
+                    dataList.innerHTML = ''; // Clear existing content
+                    filteredData.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        for (const key in item) {
+                            if (item.hasOwnProperty(key) && key !== 'id') {
+                                const value = item[key];
+                                itemDiv.innerHTML += `<p><strong>${key}:</strong> ${value}</p>`;
+                            }
+                        }
+                        dataList.appendChild(itemDiv);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function bookSeats() {
+            const eventName = document.getElementById('eventName').value.trim();
+            const numSeats = parseInt(document.getElementById('numSeats').value);
+            if (!eventName || isNaN(numSeats) || numSeats < 1) {
+                alert('Please enter a valid event name and number of seats to book.');
+                return;
+            }
+
+            fetch('http://localhost:9898/uploadFile')
+                .then(response => response.json())
+                .then(data => {
+                    const event = data.find(item => item.eventName.toLowerCase() === eventName.toLowerCase());
+                    if (event) {
+                        const availableSeats = event.maximumAttendee - numSeats;
+                        document.getElementById('availableSeats').textContent = `Available Seats: ${availableSeats}`;
+                    } else {
+                        alert('Event not found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call filterEvents() function when the page loads
+        window.onload = filterEvents;
+    </script>
+</body>
+
+</html>
